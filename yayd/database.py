@@ -3,6 +3,8 @@ from enum import Enum
 from sqlmodel import Field, SQLModel, create_engine, Session
 from pydantic import validator, ValidationError, root_validator
 from uuid import UUID
+from sqlalchemy.engine import Engine
+from sqlalchemy import event
 from datetime import date, datetime
 
 class ItemType(Enum):
@@ -40,10 +42,15 @@ class BatchElem(SQLModel):
     items: list[ItemBase]
     updateDate: datetime
 
+@event.listens_for(Engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
 
 Item.update_forward_refs
 
-sqlite_file_name = "database.db"
+sqlite_file_name = "data/database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
 engine = create_engine(sqlite_url, echo=True)
