@@ -19,14 +19,22 @@ class ItemBase(SQLModel):
     url: str | None = Field(default=None)
 
     @root_validator
-    def validate_size(cls, values):
-        print(f"{values=}")
+    def validate_all(cls, values):
         if "type" not in values:
             raise ValueError("Required field type is invalid or not set")
-        if values['type'] == ItemType.file and ("size" not in values or values["size"] is None):
-            raise ValueError("Required field size is None")
-        if values['type'] == ItemType.file and ("url" not in values or values["url"] is None):
-            raise ValueError("Required field url is None")
+        if values['type'] == ItemType.file:
+            if "size" not in values or values["size"] is None:
+                raise ValueError("Required field size is None")
+            if "url" not in values or values["url"] is None:
+                raise ValueError("Required field url is None")
+            elif len(values["url"]) > 255:
+                raise ValueError("url cant be longer 255 chars")
+        elif values['type'] == ItemType.folder:
+            if "size" in values and values["size"] is not None:
+                raise ValueError("Field size must be None for folder")
+            if "url" in values and values["url"] is not None:
+                raise ValueError("Field url must be None for folder")
+            
         return values
     
             
