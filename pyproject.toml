@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "yayd"
+version = "0.1.0"
+description = ""
+authors = ["ThePigeonKing <thepigeonking@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+sqlmodel = "^0.0.8"
+uvicorn = "^0.18.3"
+fastapi = "^0.83.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+raise = "yayd.app:main"
