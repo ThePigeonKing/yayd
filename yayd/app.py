@@ -33,7 +33,7 @@ def import_items(data: BatchElem, session: Session = Depends(get_db_session),):
 # def 
 
 def main():
-    uvicorn.run("yayd.app:app", port=8000, log_level="info")
+    uvicorn.run("yayd.app:app", host="0.0.0.0", port=8000, log_level="info")
 
 if __name__ == "__main__":
     main()
