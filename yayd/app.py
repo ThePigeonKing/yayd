@@ -61,23 +61,19 @@ def import_items(data: BatchElem, session: Session = Depends(get_db_session)):
 
 
 @app.delete("/delete/{id:str}")
-def delete_item(id, date: datetime, session: Session = Depends(get_db_session)):
-    try:
-        id = UUID(id)
-        statement = select(Item).where(Item.id == id)
-        delete_head = session.exec(statement).first()
-        if delete_head is None:
-            return HTTPException(status_code=404, detail="Item not found")
-        else:
-            decrease_size(delete_head.parentId, delete_head.size, session)
-            if delete_head.type == ItemType.file:
-                session.delete(delete_head)
-            elif delete_head.type == ItemType.folder:
-                delete_all_related(delete_head, session)
-                session.delete(delete_head)
-        session.commit()
-    except ValueError as exc:
-        return HTTPException(status_code=400, detail=f"Bad id given, {exc}")
+def delete_item(id: str, date: datetime, session: Session = Depends(get_db_session)):
+    statement = select(Item).where(Item.id == id)
+    delete_head = session.exec(statement).first()
+    if delete_head is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    else:
+        decrease_size(delete_head.parentId, delete_head.size, session)
+        if delete_head.type == ItemType.file:
+            session.delete(delete_head)
+        elif delete_head.type == ItemType.folder:
+            delete_all_related(delete_head, session)
+            session.delete(delete_head)
+    session.commit()
 
 
 @app.get("/nodes/{id:str}")
@@ -86,7 +82,7 @@ def get_info(id: str, session: Session = Depends(get_db_session)):
     statement = select(Item).where(Item.id == id)
     headelem = session.exec(statement).first()
     if headelem is None:
-        return HTTPException(status_code=400, detail="id doen't exist")
+        raise HTTPException(status_code=400, detail="id doen't exist")
     else:
         dicted = dict(headelem)
         dicted["date"] = dicted.pop("updateDate").strftime(date_format)

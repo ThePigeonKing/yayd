@@ -66,7 +66,7 @@ def set_sqlite_pragma(dbapi_connection, connection_record):
 
 Item.update_forward_refs
 
-sqlite_file_name = "data/database.db"
+sqlite_file_name = "/data/database.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
 engine = create_engine(sqlite_url, echo=True)

@@ -8,5 +8,5 @@ services:
     ports:
       - 0.0.0.0:80:8000
     volumes:
-      - ./data:/yayd/data
+      - ./data:/data
 
