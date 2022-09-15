@@ -1,7 +1,7 @@
 
 # Yet Another Yandex Disk API
 
-## (c) **ne_bknn & ThePigeonKing**
+## (c) **ThePigeonKing**
 
 ![my mental state is decaying](./task/rei.jpg)
 
@@ -30,7 +30,5 @@ poetry run raise
 ## **Create Docker**
 
 ```
-docker build --tag <tag> .
-
-docker run -p8000:8000 <tag>
+docker compose up
 ```
