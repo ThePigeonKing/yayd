@@ -32,3 +32,6 @@ poetry run raise
 ```
 docker compose up
 ```
+## **DOCS**
+
+#### Доступно по адресу 0.0.0.0/docs

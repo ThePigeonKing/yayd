@@ -82,7 +82,7 @@ def get_info(id: str, session: Session = Depends(get_db_session)):
     statement = select(Item).where(Item.id == id)
     headelem = session.exec(statement).first()
     if headelem is None:
-        raise HTTPException(status_code=400, detail="id doen't exist")
+        raise HTTPException(status_code=404, detail="id doen't exist")
     else:
         dicted = dict(headelem)
         dicted["date"] = dicted.pop("updateDate").strftime(date_format)
